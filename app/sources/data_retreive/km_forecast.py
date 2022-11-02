@@ -1,5 +1,4 @@
 import base64
-
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -13,10 +12,9 @@ from .utils import *
 
 def url(city, model):
     city_coded = city_codes[city]
-    ENCODED_BASE_URL = b"a2FjaGVsbWFubndldHRlci5jb20"
+    ENCODED_BASE_URL = b"a2FjaGVsbWFubndldHRlci5jb20="
     DECODED_BASE_URL = base64.b64decode(ENCODED_BASE_URL).decode()
-    URL = "https://{base_url}/de/ajax/fccompact?city_id={city}&lang=de&units=de&tf=1&m={model}&c=a8a25aca029c7599c307c5a32b80b102".format(
-        base_url=DECODED_BASE_URL, city=city_coded, model=model)
+    URL = f"https://{DECODED_BASE_URL}/de/ajax/fccompact?city_id={city_coded}&lang=de&units=de&tf=1&m={model}&c=a8a25aca029c7599c307c5a32b80b102"
     return URL
 
 
