@@ -2,7 +2,7 @@ from .data_retreive.km_forecast import get_pressure
 from .data_retreive.utils import model_names, city_codes
 import matplotlib
 
-matplotlib.use('TkAgg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from datetime import datetime
