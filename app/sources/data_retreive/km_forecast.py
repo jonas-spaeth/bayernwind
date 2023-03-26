@@ -24,10 +24,15 @@ def get_pressure(city, model):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0',
     }
-    page = requests.get(URL, headers=headers)
+    page = requests.get(URL) # , headers=headers)
 
     soup = BeautifulSoup(page.content, 'html.parser')
+
+    print(soup)
+
     script = soup.find(type="text/javascript").extract().string
+
+    print(script)
 
     # search_for = "var hccompact_data_temp = "
     search_for = "var hccompact_data_pressure = "
