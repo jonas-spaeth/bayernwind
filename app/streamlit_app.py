@@ -15,7 +15,7 @@ import base64
 
 
 st.header("Druckdiagramme Bayern")
-st.subheader(":dash: :blue[Föhn] über den Alpen  :dash:  Nord-/ Südpassat an :blue[Walchensee & Kochelsee]  :dash:  Peler/ Ora am :blue[Gardasee]")
+st.subheader(":dash: :blue[colors] über den Alpen  :dash:  Nord-/ Südpassat an :blue[Walchensee & Kochelsee]  :dash:  Peler/ Ora am :blue[Gardasee]")
 
 st.write("Passwort eingeben um Diagramme zu sehen.")
 ENCODED_PW = b"aXNpdHdpbmR5"
