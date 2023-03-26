@@ -24,19 +24,19 @@ decoded_pw = base64.b64decode(ENCODED_PW).decode()
 
 st.markdown("---")
 
-st.subheader(":dash:  _Föhn_ über den Alpen")
+st.subheader(":dash:  Föhn über den Alpen")
 if decoded_pw == pw_input:
     fig, ax = run(PDiffDiagrams.foehn)
     st.pyplot(fig)
 st.markdown("---")
 
-st.subheader(":dash:  Nord-/ Südpassat an _Walchensee & Kochelsee_")
+st.subheader(":dash:  Nord-/ Südpassat an Walchensee & Kochelsee")
 if decoded_pw == pw_input:
     fig, ax = run(PDiffDiagrams.walchensee)
     st.pyplot(fig)
 st.markdown("---")
 
-st.subheader(":dash:  Peler/ Ora am _Gardasee_")
+st.subheader(":dash:  Peler/ Ora am Gardasee")
 if decoded_pw == pw_input:
     fig, ax = run(PDiffDiagrams.gardasee)
     st.pyplot(fig)
