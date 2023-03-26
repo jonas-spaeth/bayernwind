@@ -15,17 +15,29 @@ import base64
 
 
 st.header("Druckdiagramme Bayern")
-st.subheader(":dash: :blue[colors] über den Alpen  :dash:  Nord-/ Südpassat an :blue[Walchensee & Kochelsee]  :dash:  Peler/ Ora am :blue[Gardasee]")
 
-st.write("Passwort eingeben um Diagramme zu sehen.")
 ENCODED_PW = b"aXNpdHdpbmR5"
-pw_input = st.text_input(label="password", type="password")
+
+label = 'Passwort eingeben um Diagramme zu sehen.'
+pw_input = st.text_input(label=label, type="password")
 decoded_pw = base64.b64decode(ENCODED_PW).decode()
 
+st.markdown("---")
+
+st.subheader(":dash:  _Föhn_ über den Alpen")
 if decoded_pw == pw_input:
-    for diagram in PDiffDiagrams:
+    fig, ax = run(PDiffDiagrams.foehn)
+    st.pyplot(fig)
+st.markdown("---")
 
-        fig, ax = run(diagram)
-        st.pyplot(fig)
+st.subheader(":dash:  Nord-/ Südpassat an _Walchensee & Kochelsee_")
+if decoded_pw == pw_input:
+    fig, ax = run(PDiffDiagrams.walchensee)
+    st.pyplot(fig)
+st.markdown("---")
 
-        st.markdown("---")
+st.subheader(":dash:  Peler/ Ora am _Gardasee_")
+if decoded_pw == pw_input:
+    fig, ax = run(PDiffDiagrams.gardasee)
+    st.pyplot(fig)
+st.markdown("---")
