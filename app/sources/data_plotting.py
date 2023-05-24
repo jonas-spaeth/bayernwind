@@ -1,5 +1,5 @@
 from .data_retreive.km_forecast import get_pressure
-from .data_retreive.utils import model_names, city_codes
+from .data_retreive.utils import model_names
 import matplotlib
 
 matplotlib.use('Agg')

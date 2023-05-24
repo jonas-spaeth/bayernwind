@@ -2,11 +2,8 @@ import base64
 import requests
 from bs4 import BeautifulSoup
 import json
-import matplotlib.pyplot as plt
 from datetime import datetime
 import pandas as pd
-import matplotlib.dates as mdates
-import numpy as np
 from .utils import *
 
 
@@ -28,11 +25,11 @@ def get_pressure(city, model):
 
     soup = BeautifulSoup(page.content, 'html.parser')
 
-    print(soup)
+    # print(soup)
 
     script = soup.find(type="text/javascript").extract().string
 
-    print(script)
+    # print(script)
 
     # search_for = "var hccompact_data_temp = "
     search_for = "var hccompact_data_pressure = "

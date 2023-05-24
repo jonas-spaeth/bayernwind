@@ -147,5 +147,5 @@ def to_nc_by_month(ds, path):
     xr.save_mfdataset(ds_by_month, labels)
 
 
-collect_measurements(Webcams.kochelsee, start_date="2022-01-01", stop_date="2022-10-31", hours=range(5, 21),
-                     append=True)
+collect_measurements(Webcams.kochelsee, start_date="2020-01-01", stop_date="2020-01-31", hours=range(5, 21),
+                     append=False)
