@@ -53,7 +53,7 @@ class DiagramWalchensee:
         # ax.text(0.25, 0.05, low, transform=ax.transAxes, fontdict=dict(size=15, alpha=.5), va="bottom",
         #         ha="center")
         ax.grid(alpha=.6)
-        ax.grid(alpha=.25, minor=True)
+        ax.grid(alpha=.25, which="minor")
         return fig, ax
 
 
