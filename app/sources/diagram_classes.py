@@ -29,21 +29,24 @@ class DiagramWalchensee:
         title = "Pressure diagram Walchensee/ Kochelsee (+: Foehn, -: Thermal winds)"
         # individual members
         member_plot = self.pdiff.hvplot.line(title=title, color="lightblue", line_width=1)
-        # ensemble mean
-        ensmean_plot = self.pdiff.rename("Ensemble mean").mean(axis=1).hvplot.line(
-            color="darkblue", line_width=3,
-            grid=True, legend=False)
-
-        # horizontal lines
-        hline_threshold_kws = dict(line_width=1, color="gray", line_dash="dashed")
-        hline_zero_kws = dict(line_width=1.5, color="black")
-        hlines = hv.HLine(-2).opts(**hline_threshold_kws) * hv.HLine(2).opts(**hline_threshold_kws) * hv.HLine(0).opts(
-            **hline_zero_kws)
-
-        combined_plot = (member_plot * ensmean_plot * hlines)
-
-        formatter = DatetimeTickFormatter(hours="%Hh", days="%a, %d. %b")  # , months='%b %Y')
-        combined_plot.opts(
-            opts.Curve(xrotation=45, ylabel='hPa', xformatter=formatter)
-        )
-        return combined_plot
+        return member_plot
+        #
+        #
+        # # ensemble mean
+        # ensmean_plot = self.pdiff.rename("Ensemble mean").mean(axis=1).hvplot.line(
+        #     color="darkblue", line_width=3,
+        #     grid=True, legend=False)
+        #
+        # # horizontal lines
+        # hline_threshold_kws = dict(line_width=1, color="gray", line_dash="dashed")
+        # hline_zero_kws = dict(line_width=1.5, color="black")
+        # hlines = hv.HLine(-2).opts(**hline_threshold_kws) * hv.HLine(2).opts(**hline_threshold_kws) * hv.HLine(0).opts(
+        #     **hline_zero_kws)
+        #
+        # combined_plot = (member_plot * ensmean_plot * hlines)
+        #
+        # formatter = DatetimeTickFormatter(hours="%Hh", days="%a, %d. %b")  # , months='%b %Y')
+        # combined_plot.opts(
+        #     opts.Curve(xrotation=45, ylabel='hPa', xformatter=formatter)
+        # )
+        # return combined_plot
