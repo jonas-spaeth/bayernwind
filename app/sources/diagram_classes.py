@@ -32,8 +32,8 @@ class DiagramWalchensee:
     def plot(self):
         fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 
-        ax.plot(self.pdiff.index, self.pdiff, lw=1, color="lightblue")
-        ax.plot(self.pdiff.index, self.pdiff.mean(axis=1), lw=2.5, color="darkblue")
+        ax.plot(self.pdiff.index, self.pdiff, lw=1, color="lightblue", zorder=1)
+        ax.plot(self.pdiff.index, self.pdiff.mean(axis=1), lw=2.5, color="darkblue", zorder=2)
 
         # ax.set_title("pressure diff: {} - {}".format(city1, city2), fontdict=dict(size=14))
         ax.set_ylabel("hPa")
@@ -53,7 +53,7 @@ class DiagramWalchensee:
         # ax.text(0.25, 0.05, low, transform=ax.transAxes, fontdict=dict(size=15, alpha=.5), va="bottom",
         #         ha="center")
         ax.grid(alpha=.6)
-        ax.grid(alpha=.3, minor=True)
+        ax.grid(alpha=.25, minor=True)
         return fig, ax
 
 
