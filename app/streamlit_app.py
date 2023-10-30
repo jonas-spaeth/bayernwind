@@ -3,7 +3,7 @@ from sources.data_plotting import run
 from sources.PDiffDiagrams import PDiffDiagrams
 from sources.diagram_classes import DiagramWalchensee
 import matplotlib
-
+import holoviews as hv
 matplotlib.use('Agg')
 import base64
 
@@ -42,6 +42,6 @@ st.subheader(":dash:  Walchensee & Kochelsee: Kurzfristige Ensemble-Prognose")
 if decoded_pw == pw_input:
     diagramWalchensee = DiagramWalchensee()
     plot = diagramWalchensee.plot()
-    st.pyplot(plot)
+    st.pyplot(hv.render(plot, backend='bokeh'))
     st.bokeh_chart(plot)
 st.markdown("---")

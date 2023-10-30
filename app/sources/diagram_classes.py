@@ -30,6 +30,7 @@ class DiagramWalchensee:
         # individual members
         member_plot = self.pdiff.hvplot.line(title=title, color="lightblue", line_width=1)
         return member_plot
+        
         #
         #
         # # ensemble mean
