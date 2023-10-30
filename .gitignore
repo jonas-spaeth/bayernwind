@@ -3,3 +3,10 @@ playground.ipynb
 .idea
 *.nc
 app/sources/data_analysis
+*/__pycache__/
+*/.DS_Store
+app/tests/__pycache__/
+app/sources/data_retreive/__pycache__/
+app/sources/__pycache__/
+app/sources/.DS_Store
+app/sources/data_retreive/era5.py

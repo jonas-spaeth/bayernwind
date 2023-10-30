@@ -1,6 +1,7 @@
 import streamlit as st
 from sources.data_plotting import run
 from sources.PDiffDiagrams import PDiffDiagrams
+from sources.diagram_classes import DiagramWalchensee
 import matplotlib
 
 matplotlib.use('Agg')
@@ -35,4 +36,12 @@ st.subheader(":dash:  Peler/ Ora am Gardasee")
 if decoded_pw == pw_input:
     fig, ax = run(PDiffDiagrams.gardasee)
     st.pyplot(fig)
+st.markdown("---")
+
+st.subheader(":dash:  Walchensee & Kochelsee: Kurzfristige Ensemble-Prognose")
+if decoded_pw == pw_input:
+    diagramWalchensee = DiagramWalchensee()
+    plot = diagramWalchensee.plot()
+    st.pyplot(plot)
+    st.bokeh_chart(plot)
 st.markdown("---")

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from ..sources.data_retreive.km_forecast import get_pressure
+from ..sources.data_retreive.km_forecast import get_pressure, get_ensemble_icond2
 from ..sources.data_plotting import run, plot_p_diff
 from ..sources.PDiffDiagrams import PDiffDiagrams
 import matplotlib.pyplot as plt
@@ -25,3 +25,7 @@ class Test(TestCase):
         #response = get_pressure("innsbruck", 'ecmw')
         #print(response)
 
+    def test_get_ensemble_icond2(self):
+        df = get_ensemble_icond2()
+        df.plot()
+        plt.show()
