@@ -32,8 +32,8 @@ class DiagramWalchensee:
     def plot(self):
         fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 
-        ax.plot(self.pdiff.index, self.pdiff.mean(axis=1), lw=2.5, color="darkblue")
         ax.plot(self.pdiff.index, self.pdiff, lw=1, color="lightblue")
+        ax.plot(self.pdiff.index, self.pdiff.mean(axis=1), lw=2.5, color="darkblue")
 
         # ax.set_title("pressure diff: {} - {}".format(city1, city2), fontdict=dict(size=14))
         ax.set_ylabel("hPa")
@@ -43,7 +43,7 @@ class DiagramWalchensee:
 
         label_now = datetime.strftime(datetime.now(), "%d.%m.%y %H:%M")
         ax.set_title(label_now, loc="right", fontdict=dict(size=8, color="gray"))
-        ax.xaxis.set_minor_locator(mdates.HourLocator(byhour=range(0, 24, 6)))
+        ax.xaxis.set_minor_locator(mdates.HourLocator(byhour=range(0, 24, 3)))
         ax.xaxis.set_major_locator(mdates.DayLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%a, %d.%m.%y'))
         ax.axhline(0, color="k")
@@ -52,7 +52,8 @@ class DiagramWalchensee:
         # ax.text(0.25, 0.95, transform=ax.transAxes, fontdict=dict(size=15, alpha=.5), va="top", ha="center")
         # ax.text(0.25, 0.05, low, transform=ax.transAxes, fontdict=dict(size=15, alpha=.5), va="bottom",
         #         ha="center")
-        ax.grid(alpha=.5)
+        ax.grid(alpha=.6)
+        ax.grid(alpha=.3, minor=True)
         return fig, ax
 
 
