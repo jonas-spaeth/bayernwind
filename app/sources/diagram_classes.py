@@ -3,6 +3,7 @@ from .data_retreive.data_retreiver import parse_ens_page, download_ens_page
 from .data_retreive.utils import city_codes
 import holoviews as hv
 from holoviews import opts
+import hvplot.pandas  # Import the hvplot.pandas extension
 
 
 class DiagramWalchensee:
