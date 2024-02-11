@@ -28,7 +28,7 @@ linkify-it-py==2.0.2
 Markdown==3.5
 markdown-it-py==2.2.0
 MarkupSafe==2.1.2
-matplotlib==3.7.1
+matplotlib==3.8.2
 mdit-py-plugins==0.4.0
 mdurl==0.1.2
 numpy==1.24.3
@@ -51,6 +51,7 @@ pyviz_comms==3.0.0
 PyYAML==6.0.1
 requests==2.31.0
 rich==13.3.5
+seaborn==0.13.2
 six==1.16.0
 smmap==5.0.0
 soupsieve==2.4.1

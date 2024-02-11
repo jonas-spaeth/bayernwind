@@ -27,7 +27,9 @@ class TestEnsDiagram(TestCase):
 
     def test_try_plot(self):
         # Create a datetime index spanning 2.5 days with 1-hour intervals
-        date_rng = pd.date_range(start='2023-10-30 09:00:00', end='2023-11-01 21:30:00', freq='H')
+        date_rng = pd.date_range(
+            start="2023-10-30 09:00:00", end="2023-11-01 21:30:00", freq="H"
+        )
         # Create random sample data for the DataFrame
         np.random.seed(42)
         data = np.random.normal(size=(len(date_rng), 21))
@@ -35,24 +37,46 @@ class TestEnsDiagram(TestCase):
         # Create the Pandas DataFrame
         pdiff = pd.DataFrame(data, index=date_rng, columns=range(21))
 
-        formatter = DatetimeTickFormatter(hours="%Hh", days="%a, %d. %b")  # , months='%b %Y')
+        formatter = DatetimeTickFormatter(
+            hours="%Hh", days="%a, %d. %b"
+        )  # , months='%b %Y')
 
-        member_plot = pdiff.hvplot.line(title='Interactive Line Plot', color="lightblue", line_width=1, tools=[],
-                                        legend=False)
+        member_plot = pdiff.hvplot.line(
+            title="Interactive Line Plot",
+            color="lightblue",
+            line_width=1,
+            tools=[],
+            legend=False,
+        )
 
         # ensemble mean
-        ensmean_plot = pdiff.mean(axis=1).rename("Ensemble mean").hvplot.line(title='Pressure diagram Walchensee/ Kochelsee (+: Foehn, -: Thermal winds)', color="darkblue", line_width=3,
-                                                      tools=[], grid=True, legend=False
-                                                      )
+        ensmean_plot = (
+            pdiff.mean(axis=1)
+            .rename("Ensemble mean")
+            .hvplot.line(
+                title="Pressure diagram Walchensee/ Kochelsee (+: Foehn, -: Thermal winds)",
+                color="darkblue",
+                line_width=3,
+                tools=[],
+                grid=True,
+                legend=False,
+            )
+        )
 
         hline_threshold_kws = dict(line_width=1, color="gray", line_dash="dashed")
         hline_zero_kws = dict(line_width=1.5, color="black")
-        hlines = hv.HLine(-2).opts(**hline_threshold_kws) * hv.HLine(2).opts(**hline_threshold_kws) * hv.HLine(0).opts(**hline_zero_kws)
+        hlines = (
+            hv.HLine(-2).opts(**hline_threshold_kws)
+            * hv.HLine(2).opts(**hline_threshold_kws)
+            * hv.HLine(0).opts(**hline_zero_kws)
+        )
 
-        combined_plot = (member_plot * ensmean_plot * hlines)
+        combined_plot = member_plot * ensmean_plot * hlines
 
         combined_plot.opts(
-            opts.Curve(xrotation=45, ylabel='hPa', xformatter=formatter, tools=["hover"])
+            opts.Curve(
+                xrotation=45, ylabel="hPa", xformatter=formatter, tools=["hover"]
+            )
         )
 
         show(hv.render(combined_plot))

@@ -19,15 +19,15 @@ def create_session_get_csrf():
     sess = requests.Session()
 
     # find csrf token
-    resp = sess.get(webcam_url, headers={
-        "User-Agent": USER_AGENT
-    })
-    m = re.search('csrf-token\" content=\"([a-z|0-9]*)\"', str(resp.content))
+    resp = sess.get(webcam_url, headers={"User-Agent": USER_AGENT})
+    m = re.search('csrf-token" content="([a-z|0-9]*)"', str(resp.content))
     csrf_token = m.group(1)
     return sess, csrf_token
 
 
-def get_measurement_json_via_api(sess, csrf_token, timestamp: pd.Timestamp, webcam: Webcams):
+def get_measurement_json_via_api(
+    sess, csrf_token, timestamp: pd.Timestamp, webcam: Webcams
+):
     # api call for measurement data
 
     stoptime = timestamp + pd.Timedelta("9min")
@@ -42,21 +42,31 @@ def get_measurement_json_via_api(sess, csrf_token, timestamp: pd.Timestamp, webc
             "User-Agent": USER_AGENT,
             "CsrfToken": csrf_token,
             "referer": f"https://{DECODED_BASE_URL}/webcam/{webcam.link}",
-        })
+        },
+    )
     return resp.json()
 
 
 def parse_measurement_json(measurement_json):
     measurement = measurement_json.get("measurment")
     try:
-        if measurement[0].get("error") == 'No Weatherdata available.':
+        if measurement[0].get("error") == "No Weatherdata available.":
             # print("No data available.")
             return None
     except KeyError:
         if measurement is not None:
             # print("measurement: ", measurement)
-            keys_and_dtype = [("temp", float), ("wtemp", float), ("wsavg", float), ("wsmax", float), ("rain", float),
-                              ("rp", float), ("dp", float), ("rh", float), ("tsdatetime", pd.Timestamp)]
+            keys_and_dtype = [
+                ("temp", float),
+                ("wtemp", float),
+                ("wsavg", float),
+                ("wsmax", float),
+                ("rain", float),
+                ("rp", float),
+                ("dp", float),
+                ("rh", float),
+                ("tsdatetime", pd.Timestamp),
+            ]
 
             keys_and_values = {}
             for key, dtype in keys_and_dtype:
@@ -69,7 +79,9 @@ def parse_measurement_json(measurement_json):
             return dataset
 
 
-def collect_measurements(webcam: Webcams, start_date, stop_date, hours=range(6, 20), append=True):
+def collect_measurements(
+    webcam: Webcams, start_date, stop_date, directory, hours=range(6, 20), append=True
+):
     # create session
     sess, csrf_token = create_session_get_csrf()
 
@@ -82,7 +94,9 @@ def collect_measurements(webcam: Webcams, start_date, stop_date, hours=range(6, 
     file_exists = len(target_files) > 0
     if file_exists:
         if not append:
-            raise FileExistsError("append set to 'False' but target file already exists.")
+            raise FileExistsError(
+                "append set to 'False' but target file already exists."
+            )
         else:
             # file exists -> append data
             # get existing times
@@ -91,7 +105,9 @@ def collect_measurements(webcam: Webcams, start_date, stop_date, hours=range(6, 
             ds.close()
     else:
         if append:
-            raise FileNotFoundError("append set to 'True' but target file does not exist.")
+            raise FileNotFoundError(
+                "append set to 'True' but target file does not exist."
+            )
         else:
             # file does not exists -> create new data
             existing_times = []
@@ -110,11 +126,15 @@ def collect_measurements(webcam: Webcams, start_date, stop_date, hours=range(6, 
     times_no_data_avail = []
     for t in tqdm(msr_times_day, desc="Collecting Measurements"):
         # api call
-        measurement_json = get_measurement_json_via_api(sess, csrf_token, timestamp=t, webcam=webcam)
+        measurement_json = get_measurement_json_via_api(
+            sess, csrf_token, timestamp=t, webcam=webcam
+        )
         # parse api response (returns 'None' if no measurement available)
         ds = parse_measurement_json(measurement_json)
         if ds is not None:
-            ds = ds.assign_coords(requested_time=("time", [t])).swap_dims(time="requested_time")
+            ds = ds.assign_coords(requested_time=("time", [t])).swap_dims(
+                time="requested_time"
+            )
             ds_collected.append(ds)
         else:
             times_no_data_avail.append(t)
@@ -123,7 +143,9 @@ def collect_measurements(webcam: Webcams, start_date, stop_date, hours=range(6, 
     ds_collected = xr.merge(ds_collected)
     # fill with NaN where request was unsuccessful
     ds_collected = ds_collected.reindex(
-        requested_time=list(ds_collected.requested_time.values) + list(times_no_data_avail))
+        requested_time=list(ds_collected.requested_time.values)
+        + list(times_no_data_avail)
+    )
     # sort by dimension requested_time
     ds_collected = ds_collected.sortby("requested_time")
     # write to netcdf
@@ -134,10 +156,10 @@ def collect_measurements(webcam: Webcams, start_date, stop_date, hours=range(6, 
         ds_merged = ds_merged.sortby("requested_time")
         ds_existing.close()
 
-        to_nc_by_month(ds_merged, f"data/addicted_{webcam.name}")
+        to_nc_by_month(ds_merged, f"{directory}/addicted_{webcam.name}")
     else:
         # save to new file
-        to_nc_by_month(ds_collected, f"data/addicted_{webcam.name}")
+        to_nc_by_month(ds_collected, f"{directory}/addicted_{webcam.name}")
     print("Success.")
 
 
@@ -147,5 +169,13 @@ def to_nc_by_month(ds, path):
     xr.save_mfdataset(ds_by_month, labels)
 
 
-collect_measurements(Webcams.kochelsee, start_date="2020-01-01", stop_date="2020-01-31", hours=range(5, 21),
-                     append=False)
+# for y in range(2015, 2019):
+# for m in range(1, 13):
+collect_measurements(
+    Webcams.kochelsee,
+    start_date=f"2022-12-01",
+    stop_date=f"2023-11-30",
+    directory="/Users/Jonas.Spaeth/Developer/streamlit/bayernwind/app/data/addicted/kochelsee",
+    hours=range(5, 21),
+    append=False,
+)

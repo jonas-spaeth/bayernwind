@@ -4,7 +4,7 @@ city_codes = {
     "brescia": "3181554",
     "starnberg": "2829457",
     "peiting": "2855025",
-    "jenbach": "2775093"
+    "jenbach": "2775093",
 }
 
 model_names = {

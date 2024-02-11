@@ -10,3 +10,7 @@ app/sources/data_retreive/__pycache__/
 app/sources/__pycache__/
 app/sources/.DS_Store
 app/sources/data_retreive/era5.py
+
+venv
+venv_dev
+venv_addicted

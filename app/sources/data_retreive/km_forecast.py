@@ -19,11 +19,11 @@ def get_pressure(city, model):
     URL = url(city, model)
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0',
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0",
     }
     page = requests.get(URL)  # , headers=headers)
 
-    soup = BeautifulSoup(page.content, 'html.parser')
+    soup = BeautifulSoup(page.content, "html.parser")
 
     # print(soup)
 
@@ -38,10 +38,10 @@ def get_pressure(city, model):
     idx_zero = idx_data + str.find(script[idx_data:], "0")
     idx_newline = idx_zero + str.find(script[idx_zero:], "\n")
 
-    res = script[(idx_data + 6):idx_newline]
+    res = script[(idx_data + 6) : idx_newline]
 
     idx_colon_to_rm = str.rfind(res, ",")
-    res = res[:idx_colon_to_rm] + res[idx_colon_to_rm + 1:]
+    res = res[:idx_colon_to_rm] + res[idx_colon_to_rm + 1 :]
 
     res = json.loads(res)
     x = [datetime.fromtimestamp(d[0] / 1000) for d in res]
@@ -49,6 +49,7 @@ def get_pressure(city, model):
 
     p = pd.Series(data=y, index=x)
     return p
+
 
 # def ensemble_url(city):
 #     city_coded = city_codes[city]
