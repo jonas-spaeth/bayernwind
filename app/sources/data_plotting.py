@@ -9,6 +9,7 @@ from datetime import datetime
 import numpy as np
 import seaborn as sns
 from .PDiffDiagrams import PDiffDiagrams
+from . import utils
 
 
 sns.set_theme(style="darkgrid")
@@ -47,26 +48,9 @@ def run(p_diff_diagram: PDiffDiagrams):
         label_now = datetime.strftime(datetime.now(), "%d.%m.%y %H:%M")
         ax.set_title(label_now, loc="right", fontdict=dict(size=8, color="gray"))
 
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), ncol=1, frameon=False)
+        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.15), ncol=4, frameon=False)
 
-        ax.text(
-            0.02,
-            0.95,
-            up,
-            transform=ax.transAxes,
-            fontdict=dict(size=15, alpha=0.5),
-            va="top",
-            ha="left",
-        )
-        ax.text(
-            0.02,
-            0.05,
-            low,
-            transform=ax.transAxes,
-            fontdict=dict(size=15, alpha=0.5),
-            va="bottom",
-            ha="left",
-        )
+        utils.annotate_wind_names(ax, up, low)
 
         ax.set_ylabel("hPa")
 
@@ -75,6 +59,10 @@ def run(p_diff_diagram: PDiffDiagrams):
         ax.xaxis.set_minor_locator(mdates.HourLocator(byhour=range(0, 24, 6)))
         ax.xaxis.set_major_locator(mdates.DayLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%A\n%d.%m.%y"))
+        # if hour xlim max is < 12, don't display last xticklabel
+        hour_last_day = mdates.num2date(ax.get_xlim()[1]).hour
+        if hour_last_day < 12:
+            ax.set_xticks(ax.get_xticks()[:-1])
         ax.yaxis.set_major_formatter(lambda x, pos: f"{x:+.0f}")
         ax.axhline(0, color="k")
         ylim = np.max(np.abs(ax.get_ylim())) + 2

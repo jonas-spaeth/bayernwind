@@ -11,6 +11,7 @@ from holoviews import opts
 import hvplot.pandas  # Import the hvplot.pandas extension
 import matplotlib.dates as mdates
 import seaborn as sns
+from . import utils
 
 
 class DiagramWalchensee:
@@ -55,6 +56,8 @@ class DiagramWalchensee:
         )
 
         ax = shortrange_ensemble_plot_formatting(ax)
+
+        utils.annotate_wind_names(ax, "Südwind ↑", "Nordwind ↓")
 
         return fig, ax
 
@@ -101,6 +104,8 @@ class DiagramGardasee:
         )
 
         ax = shortrange_ensemble_plot_formatting(ax)
+
+        utils.annotate_wind_names(ax, "Südwind ↑", "Nordwind ↓")
 
         return fig, ax
 
