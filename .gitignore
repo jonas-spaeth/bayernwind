@@ -14,3 +14,4 @@ app/sources/data_retreive/era5.py
 venv
 venv_dev
 venv_addicted
+.vscode/
