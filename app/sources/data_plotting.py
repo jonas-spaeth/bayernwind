@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from datetime import datetime
+from datetime import datetime, timedelta
 import numpy as np
 import seaborn as sns
 from .PDiffDiagrams import PDiffDiagrams
@@ -48,7 +48,9 @@ def run(p_diff_diagram: PDiffDiagrams):
         label_now = datetime.strftime(datetime.now(), "%d.%m.%y %H:%M")
         ax.set_title(label_now, loc="right", fontdict=dict(size=8, color="gray"))
 
-        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.15), ncol=4, frameon=False)
+        ax.legend(
+            loc="upper center", bbox_to_anchor=(0.5, -0.15), ncol=4, frameon=False
+        )
 
         utils.annotate_wind_names(ax, up, low)
 
@@ -63,6 +65,18 @@ def run(p_diff_diagram: PDiffDiagrams):
         hour_last_day = mdates.num2date(ax.get_xlim()[1]).hour
         if hour_last_day < 12:
             ax.set_xticks(ax.get_xticks()[:-1])
+        # limit xaxis to max leadtime of 6 day
+        plot_max_leadtime_in_days = 6
+        x0 = mdates.num2date(ax.get_xlim()[0])
+        x1 = mdates.num2date(ax.get_xlim()[1])
+
+        if x1 - x0 > timedelta(days=plot_max_leadtime_in_days):
+            print("Limiting x-axis to 6 days")
+            ax.set_xlim(
+                mdates.date2num(x0),
+                mdates.date2num(x0 + timedelta(days=plot_max_leadtime_in_days)),
+            )
+
         ax.yaxis.set_major_formatter(lambda x, pos: f"{x:+.0f}")
         ax.axhline(0, color="k")
         ylim = np.max(np.abs(ax.get_ylim())) + 2
