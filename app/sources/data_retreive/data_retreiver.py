@@ -6,17 +6,18 @@ from bs4 import BeautifulSoup
 
 
 def download_ens_page(location, model, variable):
-    URL = "https://kachelmannwetter.com/de/ajax/ensemble"
-    REQUEST_PARAMS = {
-        "city_id": str(location),
-        "model": model,
-        "model_view": "",
-        "param": variable,
-    }
-    HEADERS = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0",
-    }
-    return requests.get(URL, headers=HEADERS, params=REQUEST_PARAMS)
+    url = "https://kachelmannwetter.com/de/ajax/ensemble"
+    params = {"city_id": location, "model": model, "model_view": "", "param": variable}
+
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; EnsembleDataFetcher/1.0)"}
+
+    response = requests.get(url, params=params, headers=headers)
+    if response.status_code != 200:
+        raise Exception(f"Request failed with status code {response.status_code}")
+
+    return response
+    # soup = BeautifulSoup(response.content, "html.parser")
+    # return soup
 
 
 def parse_ens_page(page: requests.Request) -> pd.DataFrame:
