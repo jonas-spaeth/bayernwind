@@ -61,10 +61,6 @@ def run(p_diff_diagram: PDiffDiagrams):
         ax.xaxis.set_minor_locator(mdates.HourLocator(byhour=range(0, 24, 6)))
         ax.xaxis.set_major_locator(mdates.DayLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%A\n%d.%m.%y"))
-        # if hour xlim max is < 12, don't display last xticklabel
-        hour_last_day = mdates.num2date(ax.get_xlim()[1]).hour
-        if hour_last_day < 12:
-            ax.set_xticks(ax.get_xticks()[:-1])
         # limit xaxis to max leadtime of 6 day
         plot_max_leadtime_in_days = 6
         x0 = mdates.num2date(ax.get_xlim()[0])
@@ -77,6 +73,11 @@ def run(p_diff_diagram: PDiffDiagrams):
                 mdates.date2num(x0 + timedelta(days=plot_max_leadtime_in_days)),
             )
 
+        # if hour xlim max is < 12, don't display last xticklabel
+        hour_last_day = mdates.num2date(ax.get_xlim()[1]).hour
+        if hour_last_day < 12:
+            ax.set_xticks(ax.get_xticks()[:-1])
+            
         ax.yaxis.set_major_formatter(lambda x, pos: f"{x:+.0f}")
         ax.axhline(0, color="k")
         ylim = np.max(np.abs(ax.get_ylim())) + 2
