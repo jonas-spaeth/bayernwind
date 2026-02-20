@@ -15,3 +15,5 @@ venv
 venv_dev
 venv_addicted
 .vscode/
+
+scratch.ipynb
